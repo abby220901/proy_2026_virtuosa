@@ -1,0 +1,649 @@
+<div class="container py-5">
+
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+      <span class="badge admin-badge px-3 py-2 rounded-pill mb-2">Acceso Restringido • Administrador</span>
+      <h1 class="h3 fw-bold mb-0" style="color: #df5c8e;">Panel de Control - Virtuosa's Room</h1>
+    </div>
+    <div class="d-flex gap-3 bg-white px-4 py-2 rounded-4 shadow-sm small">
+      <div>
+        <span class="text-muted">Pedidos:</span>
+        <strong class="ms-1" style="color: #4a2c3a;">{{ authService.pedidosGlobales().length }}</strong>
+      </div>
+      <div class="border-start ps-3">
+        <span class="text-muted">Ingresos:</span>
+        <strong class="ms-1" style="color: #df5c8e;">${{ totalVentasRecaudadas }}.00 MXN</strong>
+      </div>
+    </div>
+  </div>
+
+  @if (mensajeExito) {
+    <div class="alert alert-success border-0 rounded-3 shadow-sm py-2 px-3 small mb-4">
+      ✅ {{ mensajeExito }}
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border" style="color: #df5c8e;" role="status"></div>
+      <p class="small text-muted mt-2">Verificando permisos de administrador...</p>
+    </div>
+  } @else {
+
+    <!-- Navegación por pestañas -->
+    <div class="d-flex gap-2 flex-wrap mb-4">
+      <button type="button"
+              class="btn rounded-pill px-4 fw-semibold"
+              [class.btn-rosa]="pestanaActiva === 'productos'"
+              [class.btn-outline-rosa]="pestanaActiva !== 'productos'"
+              (click)="pestanaActiva = 'productos'">
+        💄 Productos ({{ inventarioCompleto.length }})
+      </button>
+      <button type="button"
+              class="btn rounded-pill px-4 fw-semibold"
+              [class.btn-rosa]="pestanaActiva === 'pedidos'"
+              [class.btn-outline-rosa]="pestanaActiva !== 'pedidos'"
+              (click)="pestanaActiva = 'pedidos'">
+        📦 Monitorear Pedidos ({{ authService.pedidosGlobales().length }})
+      </button>
+      <button type="button"
+              class="btn rounded-pill px-4 fw-semibold"
+              [class.btn-rosa]="pestanaActiva === 'cupones'"
+              [class.btn-outline-rosa]="pestanaActiva !== 'cupones'"
+              (click)="pestanaActiva = 'cupones'">
+        🎟️ Cupones ({{ authService.cuponesAdmin().length }})
+      </button>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 1: PRODUCTOS (20 POR PÁGINA + VARIANTES + MODO EDICIÓN)     -->
+    <!-- =================================================================== -->
+    @if (pestanaActiva === 'productos') {
+      <div class="row g-4">
+        
+        <!-- Panel Agregar Nuevo Producto -->
+        @if (mostrarFormAgregar) {
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+              <h2 class="h5 fw-bold mb-3" style="color: #4a2c3a;">Agregar Nuevo Producto</h2>
+              
+              <div class="row g-2 mb-2">
+                <div class="col-6">
+                  <label class="form-label small text-muted mb-1">SKU único</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="VR-LAB-017" [(ngModel)]="nuevoProducto.sku">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small text-muted mb-1">Categoría</label>
+                  <select class="form-select form-select-sm" [(ngModel)]="nuevoProducto.categoria" (change)="actualizarNombreCategoria()">
+                    <option value="labios">Labios</option>
+                    <option value="rostro">Rostro</option>
+                    <option value="ojos">Ojos y Cejas</option>
+                    <option value="accesorios">Brochas y Accesorios</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label small text-muted mb-1">Nombre del producto</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Ej. Gloss Hidratante Rosa" [(ngModel)]="nuevoProducto.nombre">
+              </div>
+
+              <div class="row g-2 mb-2">
+                <div class="col-4">
+                  <label class="form-label small text-muted mb-1">Precio (MXN)</label>
+                  <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevoProducto.precio">
+                </div>
+                <div class="col-4">
+                  <label class="form-label small text-muted mb-1">Stock</label>
+                  <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevoProducto.stock">
+                </div>
+                <div class="col-4">
+                  <label class="form-label small text-muted mb-1">Tono</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Nude 01" [(ngModel)]="nuevoProducto.tono">
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label small text-muted mb-1">Ruta de imagen</label>
+                <div class="d-flex align-items-center gap-2">
+                  <input type="text" class="form-control form-control-sm" placeholder="imagenes/labial.png" [(ngModel)]="nuevoProducto.imagen">
+                  <img [src]="nuevoProducto.imagen"
+                       (error)="imagenPorDefecto($event)"
+                       alt="Vista previa"
+                       class="rounded-3 border flex-shrink-0"
+                       style="width: 34px; height: 34px; object-fit: cover; background-color: #fdf0f5;">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small text-muted mb-1">Descripción</label>
+                <textarea rows="2" class="form-control form-control-sm" placeholder="Detalles del producto..." [(ngModel)]="nuevoProducto.descripcion"></textarea>
+              </div>
+
+              <!-- Sección de Variantes extra dentro del formulario -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="small fw-semibold" style="color: #4a2c3a;">
+                    Variantes adicionales ({{ variantesNuevoProducto.length }})
+                  </span>
+                  <button type="button"
+                          class="btn btn-sm btn-outline-rosa rounded-pill px-3"
+                          (click)="agregarVarianteEnFormulario()">
+                    + Añadir variante
+                  </button>
+                </div>
+
+                @for (v of variantesNuevoProducto; track $index; let i = $index) {
+                  <div class="p-2 rounded-3 mb-2 border" style="background-color: #fdf0f5;">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <span class="small fw-bold" style="color: #df5c8e;">Variante #{{ i + 2 }}</span>
+                      <button type="button" class="btn btn-link btn-sm text-danger p-0 text-decoration-none small" (click)="quitarVarianteDeFormulario(i)">
+                        Quitar
+                      </button>
+                    </div>
+                    <div class="row g-1 mb-1">
+                      <div class="col-6">
+                        <input type="text" class="form-control form-control-sm" placeholder="SKU variante" [(ngModel)]="v.sku">
+                      </div>
+                      <div class="col-6">
+                        <input type="text" class="form-control form-control-sm" placeholder="Tono (ej. Rojo 02)" [(ngModel)]="v.tono">
+                      </div>
+                    </div>
+                    <div class="row g-1">
+                      <div class="col-4">
+                        <input type="number" class="form-control form-control-sm" placeholder="Precio" [(ngModel)]="v.precio">
+                      </div>
+                      <div class="col-4">
+                        <input type="number" class="form-control form-control-sm" placeholder="Stock" [(ngModel)]="v.stock">
+                      </div>
+                      <div class="col-4">
+                        <input type="text" class="form-control form-control-sm" placeholder="Imagen" [(ngModel)]="v.imagen">
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="button"
+                        class="btn btn-rosa flex-grow-1 fw-semibold"
+                        [disabled]="guardandoNuevo"
+                        (click)="agregarProducto()">
+                  {{ guardandoNuevo ? 'Publicando...' : (variantesNuevoProducto.length > 0 ? '+ Publicar Producto y Variantes' : '+ Publicar Producto') }}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="cerrarFormAgregar()">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Tabla del Catálogo (20 productos por página) -->
+        <div [class]="mostrarFormAgregar ? 'col-lg-8' : 'col-12'">
+          <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+            
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+              <div>
+                <h2 class="h5 fw-bold mb-0" style="color: #4a2c3a;">Catálogo Activo de la Tienda</h2>
+                <span class="small text-muted">
+                  @if (modoEdicionTabla) {
+                    Edita precios, stock, tonos o imágenes, o pulsa <strong>+ Variante</strong> • Página {{ paginaAdminActual }} de {{ totalPaginasAdmin }}
+                  } @else {
+                    Mostrando {{ inventarioPaginado.length }} de {{ inventarioCompleto.length }} productos • Página {{ paginaAdminActual }} de {{ totalPaginasAdmin }}
+                  }
+                </span>
+              </div>
+
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                @if (skusOcultos.length > 0 && !modoEdicionTabla) {
+                  <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" (click)="restaurarCatalogoBase()">
+                    Restaurar base ({{ skusOcultos.length }})
+                  </button>
+                }
+
+                @if (!mostrarFormAgregar) {
+                  <button type="button"
+                          class="btn btn-sm btn-outline-rosa rounded-pill px-3 fw-semibold"
+                          (click)="abrirFormAgregar()">
+                    + Agregar Nuevo Producto
+                  </button>
+                }
+
+                @if (!modoEdicionTabla) {
+                  <button type="button"
+                          class="btn btn-sm btn-rosa rounded-pill px-3 fw-semibold"
+                          (click)="activarModoEdicion()">
+                    ✏️ Activar Modo Edición
+                  </button>
+                } @else {
+                  <button type="button"
+                          class="btn btn-sm btn-rosa rounded-pill px-3 fw-semibold"
+                          [disabled]="guardandoMasivo"
+                          (click)="guardarEdicionMasiva()">
+                    {{ guardandoMasivo ? 'Guardando...' : '💾 Guardar Todo' }}
+                  </button>
+                  <button type="button"
+                          class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                          [disabled]="guardandoMasivo"
+                          (click)="cancelarModoEdicion()">
+                    Cancelar
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover table-sm align-middle small mb-0">
+                <thead>
+                  <tr class="text-muted">
+                    <th style="width: 56px;">Foto</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th style="width: 105px;">Precio ($)</th>
+                    <th style="width: 85px;">Stock</th>
+                    <th class="text-end">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (!modoEdicionTabla) {
+                    @for (p of inventarioPaginado; track p.sku) {
+                      <tr>
+                        <td>
+                          <img [src]="p.imagen"
+                               (error)="imagenPorDefecto($event)"
+                               [alt]="p.nombre"
+                               class="rounded-3 border"
+                               style="width: 46px; height: 46px; object-fit: cover; background-color: #fdf0f5;">
+                        </td>
+                        <td>
+                          <div class="fw-semibold" style="color: #4a2c3a;">{{ p.nombre }}</div>
+                          <div class="text-muted" style="font-size: 0.75rem;">
+                            <span class="fw-bold">{{ p.sku }}</span> • Tono: {{ p.tono || 'N/A' }}
+                          </div>
+                        </td>
+                        <td>{{ p.categoriaNombre }}</td>
+                        <td style="color: #df5c8e; font-weight: 600;">${{ p.precio }}.00</td>
+                        <td>
+                          @if (p.stock > 0) {
+                            <span class="text-success fw-semibold">{{ p.stock }}</span>
+                          } @else {
+                            <span class="text-danger fw-semibold">Agotado</span>
+                          }
+                        </td>
+                        <td class="text-end">
+                          <button type="button"
+                                  class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                  (click)="borrarProducto(p)">
+                            🗑️ Borrar
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  } @else {
+                    @for (p of productosEditablesPaginados; track p.sku; let idx = $index) {
+                      <tr [style.background-color]="p.esNuevaVariante ? '#fdf0f5' : '#fff9fb'">
+                        <td class="text-center">
+                          <img [src]="p.imagen"
+                               (error)="imagenPorDefecto($event)"
+                               [alt]="p.nombre"
+                               class="rounded-3 border mb-1"
+                               style="width: 48px; height: 48px; object-fit: cover; background-color: #ffffff;">
+                          <div class="fw-bold text-muted" style="font-size: 0.68rem;">{{ p.sku }}</div>
+                        </td>
+                        <td>
+                          <input type="text"
+                                 class="form-control form-control-sm mb-1"
+                                 placeholder="Nombre del producto"
+                                 [(ngModel)]="p.nombre">
+                          <div class="row g-1">
+                            <div class="col-6">
+                              <input type="text"
+                                     class="form-control form-control-sm"
+                                     placeholder="Tono / Variante"
+                                     [(ngModel)]="p.tono">
+                            </div>
+                            <div class="col-6">
+                              <input type="text"
+                                     class="form-control form-control-sm"
+                                     placeholder="imagenes/..."
+                                     [(ngModel)]="p.imagen">
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <select class="form-select form-select-sm" [(ngModel)]="p.categoria">
+                            <option value="labios">Labios</option>
+                            <option value="rostro">Rostro</option>
+                            <option value="ojos">Ojos y Cejas</option>
+                            <option value="accesorios">Brochas y Accesorios</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="number"
+                                 class="form-control form-control-sm"
+                                 [(ngModel)]="p.precio">
+                        </td>
+                        <td>
+                          <input type="number"
+                                 class="form-control form-control-sm"
+                                 [(ngModel)]="p.stock">
+                        </td>
+                        <td class="text-end text-nowrap">
+                          <button type="button"
+                                  class="btn btn-sm btn-outline-rosa rounded-pill px-2 me-1"
+                                  title="Añadir otro tono o variante de este producto"
+                                  (click)="anadirVariante(idx)">
+                            + Variante
+                          </button>
+                          <button type="button"
+                                  class="btn btn-sm btn-outline-danger rounded-pill px-2"
+                                  (click)="borrarProducto(p)">
+                            🗑️
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Controles de Paginación del Administrador (20 por página) -->
+            @if (totalPaginasAdmin > 1) {
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-3 mt-3 border-top">
+                <span class="small text-muted">
+                  Página {{ paginaAdminActual }} de {{ totalPaginasAdmin }} ({{ totalProductosAdminLista }} productos)
+                </span>
+                <div class="d-flex align-items-center gap-1">
+                  <button type="button"
+                          class="btn btn-sm btn-outline-rosa rounded-pill px-3"
+                          [disabled]="paginaAdminActual === 1"
+                          (click)="cambiarPaginaAdmin(paginaAdminActual - 1)">
+                    ← Anterior
+                  </button>
+
+                  @for (num of paginasAdminDisponibles; track num) {
+                    <button type="button"
+                            class="btn btn-sm rounded-circle fw-semibold"
+                            style="width: 32px; height: 32px;"
+                            [class.btn-rosa]="paginaAdminActual === num"
+                            [class.btn-outline-rosa]="paginaAdminActual !== num"
+                            (click)="cambiarPaginaAdmin(num)">
+                      {{ num }}
+                    </button>
+                  }
+
+                  <button type="button"
+                          class="btn btn-sm btn-outline-rosa rounded-pill px-3"
+                          [disabled]="paginaAdminActual === totalPaginasAdmin"
+                          (click)="cambiarPaginaAdmin(paginaAdminActual + 1)">
+                    Siguiente →
+                  </button>
+                </div>
+              </div>
+            }
+
+          </div>
+        </div>
+
+      </div>
+    }
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 2: MONITOREAR PEDIDOS DE CLIENTES                           -->
+    <!-- =================================================================== -->
+    @if (pestanaActiva === 'pedidos') {
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+        
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+          <div>
+            <h2 class="h5 fw-bold mb-0" style="color: #4a2c3a;">Monitoreo de Pedidos en Tiempo Real</h2>
+            <p class="small text-muted mb-0">Consulta el detalle de cada compra y actualiza el estado de envío.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <select class="form-select form-select-sm" style="width: 165px;" [(ngModel)]="filtroEstadoPedido">
+              <option value="todos">Todos los estados</option>
+              <option value="Pendiente">Pendientes</option>
+              <option value="En preparación">En preparación</option>
+              <option value="Enviado">Enviados</option>
+              <option value="Entregado">Entregados</option>
+            </select>
+
+            <button type="button" class="btn btn-sm btn-outline-rosa rounded-pill px-3" (click)="recargarPedidos()">
+              🔄 Actualizar
+            </button>
+          </div>
+        </div>
+
+        @if (pedidosFiltrados.length === 0) {
+          <div class="text-center py-4">
+            <p class="small text-muted mb-0">No hay pedidos registrados con el filtro seleccionado.</p>
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="table table-hover align-middle small mb-0">
+              <thead>
+                <tr class="text-muted">
+                  <th>Folio</th>
+                  <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Productos</th>
+                  <th>Total</th>
+                  <th>Estatus</th>
+                  <th>Actualizar</th>
+                  <th class="text-end">Detalle</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (ped of pedidosFiltrados; track ped.folio) {
+                  <tr>
+                    <td class="fw-bold" style="color: #df5c8e;">{{ ped.folio }}</td>
+                    <td class="text-muted">{{ ped.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <div class="fw-semibold" style="color: #4a2c3a;">{{ ped.nombreCliente }}</div>
+                      <div class="text-muted" style="font-size: 0.78rem;">{{ ped.correoCliente }}</div>
+                    </td>
+                    <td>
+                      <span class="badge bg-light text-dark border">
+                        {{ ped.productos?.length || 0 }} artículo(s)
+                      </span>
+                    </td>
+                    <td class="fw-bold">${{ ped.total }}.00 MXN</td>
+                    <td>
+                      <span class="badge rounded-pill px-3 py-1"
+                            [class.bg-warning-subtle]="ped.estado === 'Pendiente'"
+                            [class.text-dark]="ped.estado === 'Pendiente'"
+                            [class.bg-primary-subtle]="ped.estado === 'En preparación'"
+                            [class.text-primary]="ped.estado === 'En preparación'"
+                            [class.bg-info-subtle]="ped.estado === 'Enviado'"
+                            [class.text-info-emphasis]="ped.estado === 'Enviado'"
+                            [class.bg-success-subtle]="ped.estado === 'Entregado'"
+                            [class.text-success]="ped.estado === 'Entregado'">
+                        {{ ped.estado }}
+                      </span>
+                    </td>
+                    <td>
+                      <select class="form-select form-select-sm" style="width: 145px;"
+                              [ngModel]="ped.estado"
+                              (ngModelChange)="cambiarEstado(ped.folio, $event)">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En preparación">En preparación</option>
+                        <option value="Enviado">Enviado</option>
+                        <option value="Entregado">Entregado</option>
+                      </select>
+                    </td>
+                    <td class="text-end">
+                      <button type="button"
+                              class="btn btn-sm btn-rosa rounded-pill px-3"
+                              (click)="abrirDetallePedido(ped)">
+                        Ver detalle
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 3: GESTIÓN DE CUPONES                                       -->
+    <!-- =================================================================== -->
+    @if (pestanaActiva === 'cupones') {
+      <div class="row g-4">
+        
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+            <h2 class="h5 fw-bold mb-3" style="color: #4a2c3a;">Crear Nuevo Cupón</h2>
+
+            <div class="row g-2 mb-2">
+              <div class="col-6">
+                <label class="form-label small text-muted mb-1">Código</label>
+                <input type="text" class="form-control form-control-sm text-uppercase" placeholder="VERANO25" [(ngModel)]="nuevoCupon.codigo">
+              </div>
+              <div class="col-6">
+                <label class="form-label small text-muted mb-1">% Descuento</label>
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevoCupon.porcentaje">
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label small text-muted mb-1">Título promocional</label>
+              <input type="text" class="form-control form-control-sm" placeholder="25% OFF en toda la tienda" [(ngModel)]="nuevoCupon.titulo">
+            </div>
+
+            <div class="row g-2 mb-2">
+              <div class="col-6">
+                <label class="form-label small text-muted mb-1">Compra mínima ($)</label>
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="nuevoCupon.minimoCompra">
+              </div>
+              <div class="col-6">
+                <label class="form-label small text-muted mb-1">Etiqueta</label>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="nuevoCupon.etiqueta">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small text-muted mb-1">Descripción</label>
+              <input type="text" class="form-control form-control-sm" placeholder="Condiciones del cupón" [(ngModel)]="nuevoCupon.descripcion">
+            </div>
+
+            <button type="button" class="btn btn-rosa w-100 fw-semibold" (click)="agregarCupon()">
+              + Crear Cupón
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+            <h2 class="h5 fw-bold mb-3" style="color: #4a2c3a;">Cupones Personalizados Activos</h2>
+            @if (authService.cuponesAdmin().length === 0) {
+              <p class="small text-muted mb-0">No has creado cupones adicionales aún.</p>
+            } @else {
+              <div class="table-responsive">
+                <table class="table table-sm align-middle small">
+                  <thead>
+                    <tr class="text-muted">
+                      <th>Código</th>
+                      <th>Descuento</th>
+                      <th>Mínimo</th>
+                      <th>Título</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (c of authService.cuponesAdmin(); track c.codigo) {
+                      <tr>
+                        <td class="fw-bold" style="color: #df5c8e;">{{ c.codigo }}</td>
+                        <td>{{ c.porcentaje }}%</td>
+                        <td>${{ c.minimoCompra }}.00</td>
+                        <td>{{ c.titulo }}</td>
+                        <td class="text-end">
+                          <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" (click)="eliminarCupon(c.codigo)">
+                            Borrar
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+    }
+
+  }
+</div>
+
+<!-- MODAL DE DETALLE DEL PEDIDO -->
+@if (pedidoSeleccionado) {
+  <div class="modal-backdrop fade show" (click)="cerrarDetallePedido()"></div>
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" (click)="cerrarDetallePedido()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 rounded-4 shadow bg-white p-4">
+        
+        <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
+          <div>
+            <span class="badge admin-badge rounded-pill px-3 py-1 mb-1">Detalle de Orden</span>
+            <h3 class="h5 fw-bold mb-0" style="color: #df5c8e;">Folio {{ pedidoSeleccionado.folio }}</h3>
+            <p class="small text-muted mb-0">
+              Cliente: <strong>{{ pedidoSeleccionado.nombreCliente }}</strong> ({{ pedidoSeleccionado.correoCliente }})
+            </p>
+          </div>
+          <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrarDetallePedido()"></button>
+        </div>
+
+        <div class="table-responsive mb-3">
+          <table class="table table-sm align-middle small mb-0">
+            <thead>
+              <tr class="text-muted">
+                <th>SKU</th>
+                <th>Producto</th>
+                <th>Tono</th>
+                <th class="text-center">Cant.</th>
+                <th class="text-end">Precio Unit.</th>
+                <th class="text-end">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of pedidoSeleccionado.productos; track item.sku) {
+                <tr>
+                  <td class="fw-bold">{{ item.sku }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td class="text-muted">{{ item.tono || '—' }}</td>
+                  <td class="text-center">{{ item.cantidad }}</td>
+                  <td class="text-end">${{ item.precio }}.00</td>
+                  <td class="text-end fw-semibold">${{ item.precio * item.cantidad }}.00</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-light rounded-3 p-3 small">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Descuento aplicado:</span>
+            <span class="text-success fw-semibold">−${{ pedidoSeleccionado.descuento || 0 }}.00 MXN</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+            <span class="text-muted">Costo de envío:</span>
+            <span>{{ (pedidoSeleccionado.envio || 0) === 0 ? 'GRATIS' : '$' + pedidoSeleccionado.envio + '.00 MXN' }}</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold" style="color: #4a2c3a;">Total pagado:</span>
+            <span class="h5 fw-bold mb-0" style="color: #df5c8e;">${{ pedidoSeleccionado.total }}.00 MXN</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

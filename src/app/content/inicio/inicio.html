@@ -1,0 +1,296 @@
+<!-- ====================================================================== -->
+<!-- HERO / BANNER PRINCIPAL DE INICIO - VIRTUOSA'S ROOM                    -->
+<!-- ====================================================================== -->
+<section class="py-5">
+  <div class="container">
+    <div class="p-4 p-md-5 rounded-4 shadow-sm text-white" 
+         style="background: linear-gradient(135deg, #df5c8e 0%, #c94779 100%);">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge mb-3 px-3 py-2 rounded-pill" 
+                style="background-color: rgba(255, 255, 255, 0.22); font-weight: 600;">
+            Nueva Colección • Temporada 2026
+          </span>
+          <h1 class="display-6 fw-bold mb-3">Realza tu belleza natural con Virtuosa's Room</h1>
+          <p class="mb-4" style="color: #fce4ec; font-size: 1.05rem;">
+            Descubre cosméticos seleccionados, tonos pensados para ti y envío gratis en compras mayores a $799.00 MXN.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a routerLink="/categorias" 
+               [queryParams]="{ cat: 'todas' }" 
+               class="btn bg-white fw-bold px-4 py-2 rounded-3" 
+               style="color: #df5c8e;">
+              Explorar Catálogo
+            </a>
+            <a routerLink="/legal" 
+               class="btn text-white fw-semibold px-4 py-2 rounded-3" 
+               style="border: 1.5px solid rgba(255, 255, 255, 0.65);">
+              Políticas y Envíos
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- SECCIÓN: EXPLORA POR CATEGORÍA (FUNCIONAL CON QUERYPARAMS)             -->
+<!-- ====================================================================== -->
+<section class="py-5 bg-white" style="border-top: 1px solid #f7e4eb; border-bottom: 1px solid #f7e4eb;">
+  <div class="container">
+    
+    <!-- Encabezado y enlace "Ver todas" -->
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
+      <div>
+        <h2 class="h3 fw-bold mb-1" style="color: #df5c8e;">Explora por Categoría</h2>
+        <p class="text-muted small mb-0">Encuentra exactamente lo que tu rutina necesita</p>
+      </div>
+
+      <a routerLink="/categorias" 
+         [queryParams]="{ cat: 'todas' }" 
+         class="text-decoration-none fw-semibold small" 
+         style="color: #df5c8e;">
+        Ver todas →
+      </a>
+    </div>
+
+    <!-- Tarjetas de categorías -->
+    <div class="row g-3">
+      
+      <!-- 1. Labios -->
+      <div class="col-md-6 col-lg-3">
+        <div class="p-4 rounded-4 h-100 d-flex justify-content-between align-items-center gap-3"
+             style="background-color: #fdf0f5;">
+          <div>
+            <h3 class="h5 fw-bold mb-1" style="color: #4a2c3a;">Labios</h3>
+            <p class="small text-muted mb-0">Labiales mate, gloss, tintas y delineadores</p>
+          </div>
+          <a routerLink="/categorias" 
+             [queryParams]="{ cat: 'labios' }" 
+             class="btn btn-sm text-white fw-semibold px-3 py-2 rounded-3 flex-shrink-0"
+             style="background-color: #df5c8e;">
+            Explorar
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Rostro -->
+      <div class="col-md-6 col-lg-3">
+        <div class="p-4 rounded-4 h-100 d-flex justify-content-between align-items-center gap-3"
+             style="background-color: #fdf0f5;">
+          <div>
+            <h3 class="h5 fw-bold mb-1" style="color: #4a2c3a;">Rostro</h3>
+            <p class="small text-muted mb-0">Bases, rubores, polvos e iluminadores</p>
+          </div>
+          <a routerLink="/categorias" 
+             [queryParams]="{ cat: 'rostro' }" 
+             class="btn btn-sm text-white fw-semibold px-3 py-2 rounded-3 flex-shrink-0"
+             style="background-color: #df5c8e;">
+            Explorar
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. Ojos y Cejas -->
+      <div class="col-md-6 col-lg-3">
+        <div class="p-4 rounded-4 h-100 d-flex justify-content-between align-items-center gap-3"
+             style="background-color: #fdf0f5;">
+          <div>
+            <h3 class="h5 fw-bold mb-1" style="color: #4a2c3a;">Ojos y Cejas</h3>
+            <p class="small text-muted mb-0">Sombras, máscaras, delineadores y gel</p>
+          </div>
+          <a routerLink="/categorias" 
+             [queryParams]="{ cat: 'ojos' }" 
+             class="btn btn-sm text-white fw-semibold px-3 py-2 rounded-3 flex-shrink-0"
+             style="background-color: #df5c8e;">
+            Explorar
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. Brochas y Accesorios -->
+      <div class="col-md-6 col-lg-3">
+        <div class="p-4 rounded-4 h-100 d-flex justify-content-between align-items-center gap-3"
+             style="background-color: #fdf0f5;">
+          <div>
+            <h3 class="h5 fw-bold mb-1" style="color: #4a2c3a;">Accesorios</h3>
+            <p class="small text-muted mb-0">Brochas, esponjas, rizadores y estuches</p>
+          </div>
+          <a routerLink="/categorias" 
+             [queryParams]="{ cat: 'accesorios' }" 
+             class="btn btn-sm text-white fw-semibold px-3 py-2 rounded-3 flex-shrink-0"
+             style="background-color: #df5c8e;">
+            Explorar
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- SECCIÓN: FAVORITOS DEL MES                                             -->
+<!-- ====================================================================== -->
+<section class="py-5">
+  <div class="container">
+    
+    <!-- Encabezado de sección -->
+    <div class="text-center mb-4">
+      <h2 class="h3 fw-bold mb-1" style="color: #df5c8e;">Favoritos del Mes</h2>
+      <p class="text-muted small mb-0">Los productos más elegidos por nuestra comunidad</p>
+    </div>
+
+    <!-- Aviso flotante -->
+    @if (avisoFlotante) {
+      <div class="alert alert-light border shadow-sm rounded-pill px-4 py-2 position-fixed bottom-0 end-0 m-4 d-flex align-items-center gap-3"
+           style="z-index: 1060; border-color: #df5c8e !important; color: #4a2c3a;">
+        <span class="small fw-semibold">{{ avisoFlotante }}</span>
+        @if (!authService.estaAutenticado() && avisoFlotante.includes('favoritos')) {
+          <a routerLink="/login" class="btn btn-sm text-white rounded-pill px-3" style="background-color: #df5c8e;">
+            Iniciar Sesión
+          </a>
+        }
+      </div>
+    }
+
+    <!-- Tarjetas de productos destacados -->
+    <div class="row g-4">
+      @for (prod of favoritosMes; track prod.sku) {
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white"
+               style="cursor: pointer;"
+               (click)="abrirDetalle(prod)">
+            
+            <!-- Contenedor de imagen con insignia de disponibilidad y botón corazón -->
+            <div class="position-relative" style="height: 250px; background-color: #fdf0f5;">
+              @if (prod.stock > 5) {
+                <span class="badge position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill"
+                      style="background-color: #2e8b57; font-weight: 600;">
+                  En existencia
+                </span>
+              } @else if (prod.stock > 0) {
+                <span class="badge position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill text-dark"
+                      style="background-color: #f4c430; font-weight: 600;">
+                  Últimas piezas
+                </span>
+              } @else {
+                <span class="badge position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill bg-danger">
+                  Agotado
+                </span>
+              }
+
+              <button type="button"
+                      class="btn btn-light rounded-circle position-absolute top-0 end-0 m-3 shadow-sm d-flex align-items-center justify-content-center"
+                      style="width: 38px; height: 38px;"
+                      [title]="authService.esFavorito(prod.sku) ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+                      (click)="onToggleFavorito(prod, $event)">
+                {{ authService.esFavorito(prod.sku) ? '❤️' : '🤍' }}
+              </button>
+
+              <img [src]="prod.imagen" 
+                   (error)="imagenPorDefecto($event)"
+                   [alt]="prod.nombre"
+                   class="w-100 h-100"
+                   style="object-fit: cover;">
+            </div>
+
+            <!-- Cuerpo de la tarjeta -->
+            <div class="card-body d-flex flex-column p-4">
+              <div class="small text-muted text-uppercase mb-1" style="font-size: 0.78rem; letter-spacing: 0.4px;">
+                {{ prod.categoriaNombre }} • SKU: {{ prod.sku }}
+              </div>
+
+              <h3 class="h5 fw-bold mb-2" style="color: #4a2c3a;">{{ prod.nombre }}</h3>
+              
+              <p class="small text-muted mb-3">
+                {{ prod.descripcion }}
+              </p>
+
+              <div class="mt-auto">
+                <div class="mb-3">
+                  <span class="fs-5 fw-bold" style="color: #df5c8e;">${{ prod.precio }}.00</span>
+                  <span class="small text-muted ms-1">MXN</span>
+                </div>
+
+                <button type="button" 
+                        class="btn w-100 fw-semibold rounded-3 py-2"
+                        style="border: 1.5px solid #df5c8e; color: #df5c8e; background-color: transparent;"
+                        (click)="onAgregarCarrito(prod, $event)">
+                  Agregar al Carrito
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL DE DESCRIPCIÓN DEL PRODUCTO -->
+@if (productoSeleccionado) {
+  <div class="modal-backdrop fade show" (click)="cerrarDetalle()"></div>
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" (click)="cerrarDetalle()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 rounded-4 overflow-hidden shadow">
+        <div class="row g-0">
+          <div class="col-md-6" style="background-color: #fdf0f5; min-height: 320px;">
+            <img [src]="productoSeleccionado.imagen"
+                 (error)="imagenPorDefecto($event)"
+                 [alt]="productoSeleccionado.nombre"
+                 class="w-100 h-100"
+                 style="object-fit: cover;">
+          </div>
+          <div class="col-md-6 p-4 p-md-5 d-flex flex-column bg-white">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="small text-uppercase fw-bold" style="color: #df5c8e;">
+                {{ productoSeleccionado.categoriaNombre }} • {{ productoSeleccionado.sku }}
+              </span>
+              <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrarDetalle()"></button>
+            </div>
+
+            <h3 class="h4 fw-bold mb-2" style="color: #4a2c3a;">{{ productoSeleccionado.nombre }}</h3>
+            <p class="h4 fw-bold mb-3" style="color: #df5c8e;">${{ productoSeleccionado.precio }}.00 MXN</p>
+
+            <div class="mb-3">
+              @if (productoSeleccionado.stock > 0) {
+                <span class="badge rounded-pill px-3 py-2 text-success" style="background-color: #eaf7f0;">
+                  {{ productoSeleccionado.stock }} unidades disponibles
+                </span>
+              } @else {
+                <span class="badge rounded-pill px-3 py-2 bg-danger">Agotado</span>
+              }
+            </div>
+
+            <h4 class="h6 fw-bold text-muted mb-1">Descripción</h4>
+            <p class="small text-muted mb-4" style="line-height: 1.6;">
+              {{ productoSeleccionado.descripcion }}
+            </p>
+
+            <div class="mt-auto d-flex gap-2">
+              <button type="button"
+                      class="btn flex-grow-1 text-white fw-semibold py-2 rounded-3"
+                      style="background-color: #df5c8e;"
+                      [disabled]="productoSeleccionado.stock === 0"
+                      (click)="onAgregarCarrito(productoSeleccionado)">
+                Agregar al Carrito
+              </button>
+              <button type="button"
+                      class="btn px-3 py-2 rounded-3"
+                      style="border: 1.5px solid #df5c8e; color: #df5c8e;"
+                      [title]="authService.esFavorito(productoSeleccionado.sku) ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+                      (click)="onToggleFavorito(productoSeleccionado)">
+                {{ authService.esFavorito(productoSeleccionado.sku) ? '❤️' : '🤍' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

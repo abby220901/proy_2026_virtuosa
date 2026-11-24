@@ -1,0 +1,482 @@
+<div class="container py-5">
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 1: ENCABEZADO DEL CARRITO                                     -->
+  <!-- ===================================================================== -->
+  <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge cart-badge px-3 py-2 rounded-pill mb-2">Bolsa de Compras • Virtuosa's Room</span>
+        <h1 class="h3 fw-bold mb-0" style="color: #df5c8e;">Tu Carrito de Maquillaje</h1>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        @if (itemsCarrito.length > 0) {
+          <button type="button"
+                  class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                  (click)="vaciarCarritoLocal()">
+            Vaciar carrito
+          </button>
+        }
+        <a routerLink="/categorias" class="btn btn-sm btn-outline-rosa rounded-pill px-4 fw-semibold">
+          ← Seguir comprando
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 2: ALERTAS DE ÉXITO Y ERROR                                   -->
+  <!-- ===================================================================== -->
+  @if (mensajeExito) {
+    <div class="alert alert-success border-0 rounded-4 shadow-sm py-2 px-4 small mb-4">
+      ✅ {{ mensajeExito }}
+    </div>
+  }
+
+  @if (mensajeError) {
+    <div class="alert alert-danger border-0 rounded-4 shadow-sm py-2 px-4 small mb-4">
+      ⚠️ {{ mensajeError }}
+    </div>
+  }
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 3: COMPROBANTE DE PEDIDO CONFIRMADO (INCLUYE FICHA OXXO)     -->
+  <!-- ===================================================================== -->
+  @if (compraRealizada && pedidoConfirmado) {
+    <div class="card border-0 shadow-sm rounded-4 bg-white p-4 p-md-5 text-center mb-4">
+      <div class="mb-2" style="font-size: 2.5rem;">💖</div>
+      <span class="badge cart-badge rounded-pill px-3 py-1 mb-2">Pedido Confirmado • Folio {{ folioPedido }}</span>
+      <h2 class="h4 fw-bold mb-2" style="color: #4a2c3a;">¡Gracias por tu compra, {{ pedidoConfirmado.nombreCliente }}!</h2>
+      <p class="small text-muted mb-3">
+        Enviaremos tu pedido a: <strong>{{ pedidoConfirmado.direccionEntrega }}</strong>
+      </p>
+
+      @if (pedidoConfirmado.referenciaOxxo) {
+        <div class="mx-auto p-3 rounded-4 mb-4 text-start" style="max-width: 460px; background-color: #fff8e7; border: 1.5px dashed #e0a800;">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="fw-bold small" style="color: #856404;">🏪 FICHA DE PAGO EN OXXO</span>
+            <span class="badge bg-warning text-dark">Vigencia 48 hrs</span>
+          </div>
+          <p class="small text-muted mb-2">Dicta este número de referencia en caja de cualquier tienda OXXO:</p>
+          <div class="bg-white rounded-3 p-2 text-center fw-bold fs-5 border" style="letter-spacing: 1px; color: #4a2c3a;">
+            {{ pedidoConfirmado.referenciaOxxo }}
+          </div>
+          <div class="d-flex justify-content-between small mt-2">
+            <span class="text-muted">Monto exacto a pagar:</span>
+            <strong style="color: #df5c8e;">${{ pedidoConfirmado.total }}.00 MXN</strong>
+          </div>
+        </div>
+      }
+
+      <div>
+        <a routerLink="/categorias" class="btn btn-rosa rounded-pill px-4 fw-semibold">
+          Volver al catálogo
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 4: ESTADO VACÍO VS. CONTENIDO DEL CARRITO                     -->
+  <!-- ===================================================================== -->
+  @if (itemsCarrito.length === 0 && !compraRealizada) {
+    <div class="card border-0 shadow-sm rounded-4 bg-white p-5 text-center">
+      <h2 class="h5 fw-bold mb-2" style="color: #4a2c3a;">Tu carrito está vacío</h2>
+      <p class="small text-muted mb-4">Explora nuestras colecciones de labios, rostro, ojos y accesorios para agregar tus favoritos.</p>
+      <div>
+        <a routerLink="/categorias" class="btn btn-rosa rounded-pill px-4 fw-semibold">
+          Explorar productos
+        </a>
+      </div>
+    </div>
+  } @else if (itemsCarrito.length > 0) {
+    <div class="row g-4">
+
+      <!-- ----------------------------------------------------------------- -->
+      <!-- COLUMNA IZQUIERDA: ARTÍCULOS Y SECCIÓN DESPLEGABLE DE ENVÍO/PAGO  -->
+      <!-- ----------------------------------------------------------------- -->
+      <div class="col-lg-8">
+
+        <!-- Subsección 4A: Lista de productos seleccionados -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+          <h2 class="h6 fw-bold mb-3" style="color: #4a2c3a;">
+            Artículos seleccionados ({{ cantidadTotal }})
+          </h2>
+
+          @for (item of itemsCarrito; track item.sku) {
+            <div class="d-flex align-items-center justify-content-between gap-3 py-3 border-bottom flex-wrap">
+              <div class="d-flex align-items-center gap-3">
+                <img [src]="item.imagen"
+                     (error)="imagenPorDefecto($event)"
+                     [alt]="item.nombre"
+                     class="rounded-3 border"
+                     style="width: 64px; height: 64px; object-fit: cover; background-color: #fdf0f5;">
+                <div>
+                  <div class="fw-bold small" style="color: #4a2c3a;">{{ item.nombre }}</div>
+                  <div class="text-muted" style="font-size: 0.78rem;">
+                    SKU: {{ item.sku }} • Tono: {{ item.tono || 'N/A' }}
+                  </div>
+                  <div class="fw-semibold small mt-1" style="color: #df5c8e;">
+                    ${{ item.precio }}.00 MXN c/u
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm btn-outline-rosa rounded-circle" style="width: 30px; height: 30px; padding: 0;" (click)="cambiarCantidad(item, -1)">−</button>
+                <span class="fw-bold small px-2">{{ item.cantidad }}</span>
+                <button type="button" class="btn btn-sm btn-outline-rosa rounded-circle" style="width: 30px; height: 30px; padding: 0;" (click)="cambiarCantidad(item, 1)">+</button>
+
+                <span class="fw-bold small ms-3" style="min-width: 85px; text-align: right; color: #4a2c3a;">
+                  ${{ item.precio * item.cantidad }}.00
+                </span>
+
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 ms-2" (click)="eliminarItem(item.sku)">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Subsección 4B: Domicilio, Código Postal y Método de Pago (Desplegable) -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <h2 class="h5 fw-bold mb-1" style="color: #4a2c3a;">📍 Domicilio de Entrega y Método de Pago</h2>
+              @if (datosGuardadosConfirmados && !mostrarSeccionCheckout) {
+                <p class="small text-muted mb-0">
+                  <strong>Enviar a:</strong> {{ datosCheckout.calleNumero }}, Col. {{ datosCheckout.colonia }}, C.P. {{ datosCheckout.codigoPostal }} ({{ datosCheckout.ciudad }}, {{ datosCheckout.estado }}) •
+                  <span style="color: #df5c8e; font-weight: 600;">{{ etiquetaMetodoPago }}</span>
+                </p>
+              } @else {
+                <p class="small text-muted mb-0">Registra tu dirección, código postal y elige pagar con tarjeta de débito, OXXO o transferencia.</p>
+              }
+            </div>
+
+            <button type="button"
+                    class="btn btn-sm rounded-pill px-4 fw-semibold"
+                    [class.btn-rosa]="!mostrarSeccionCheckout"
+                    [class.btn-outline-secondary]="mostrarSeccionCheckout"
+                    (click)="abrirSeccionCheckout()">
+              {{ mostrarSeccionCheckout ? 'Cerrar formulario' : (datosGuardadosConfirmados ? '✏️ Editar datos' : 'Completar datos de envío y pago') }}
+            </button>
+          </div>
+
+          @if (mostrarSeccionCheckout) {
+            <div class="pt-3 mt-3 border-top">
+
+              <!-- Bloque 1: Formulario de domicilio y código postal -->
+              <h3 class="h6 fw-bold mb-3" style="color: #df5c8e;">1. Datos de Envío y Código Postal</h3>
+              <div class="row g-3 mb-4">
+                <div class="col-md-7">
+                  <label class="form-label small text-muted mb-1">Nombre completo de quien recibe *</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Ej. Itzel Briseño" [(ngModel)]="datosCheckout.nombreReceptor">
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label small text-muted mb-1">Teléfono de contacto *</label>
+                  <input type="tel" class="form-control form-control-sm" placeholder="867 000 0000" [(ngModel)]="datosCheckout.telefono">
+                </div>
+
+                <div class="col-md-8">
+                  <label class="form-label small text-muted mb-1">Calle y número exterior / interior *</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Ej. Av. Guerrero #1420" [(ngModel)]="datosCheckout.calleNumero">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">Código Postal (C.P.) *</label>
+                  <input type="text" maxlength="5" class="form-control form-control-sm" placeholder="88000" [(ngModel)]="datosCheckout.codigoPostal">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">Colonia *</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Col. Centro" [(ngModel)]="datosCheckout.colonia">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">Ciudad / Municipio *</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Nuevo Laredo" [(ngModel)]="datosCheckout.ciudad">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small text-muted mb-1">Estado *</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Tamaulipas" [(ngModel)]="datosCheckout.estado">
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small text-muted mb-1">Referencias del domicilio (opcional)</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Entre calles, color de fachada o indicaciones de entrega" [(ngModel)]="datosCheckout.referencias">
+                </div>
+              </div>
+
+              <!-- Bloque 2: Selector de método de pago -->
+              <h3 class="h6 fw-bold mb-3" style="color: #df5c8e;">2. Selecciona tu Método de Pago</h3>
+              <div class="row g-2 mb-3">
+
+                <!-- Opción Tarjeta de Débito -->
+                <div class="col-md-4">
+                  <div class="p-3 rounded-4 border h-100 metodo-card"
+                       [class.metodo-activo]="datosCheckout.metodoPago === 'tarjeta'"
+                       (click)="datosCheckout.metodoPago = 'tarjeta'">
+                    <div class="form-check mb-1">
+                      <input class="form-check-input" type="radio" name="metodoPagoRadio" id="pagoTarjeta" value="tarjeta" [(ngModel)]="datosCheckout.metodoPago">
+                      <label class="form-check-label fw-bold small" for="pagoTarjeta">
+                        💳 Tarjeta de débito
+                      </label>
+                    </div>
+                    <p class="text-muted mb-0" style="font-size: 0.76rem;">
+                      Ingresa número, titular, vencimiento desplegable y código de seguridad.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Opción OXXO -->
+                <div class="col-md-4">
+                  <div class="p-3 rounded-4 border h-100 metodo-card"
+                       [class.metodo-activo]="datosCheckout.metodoPago === 'oxxo'"
+                       (click)="datosCheckout.metodoPago = 'oxxo'">
+                    <div class="form-check mb-1">
+                      <input class="form-check-input" type="radio" name="metodoPagoRadio" id="pagoOxxo" value="oxxo" [(ngModel)]="datosCheckout.metodoPago">
+                      <label class="form-check-label fw-bold small" for="pagoOxxo">
+                        🏪 Pago en OXXO
+                      </label>
+                    </div>
+                    <p class="text-muted mb-0" style="font-size: 0.76rem;">
+                      Genera tu ficha con referencia de pago en efectivo en cualquier sucursal OXXO.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Opción Transferencia SPEI -->
+                <div class="col-md-4">
+                  <div class="p-3 rounded-4 border h-100 metodo-card"
+                       [class.metodo-activo]="datosCheckout.metodoPago === 'transferencia'"
+                       (click)="datosCheckout.metodoPago = 'transferencia'">
+                    <div class="form-check mb-1">
+                      <input class="form-check-input" type="radio" name="metodoPagoRadio" id="pagoSpei" value="transferencia" [(ngModel)]="datosCheckout.metodoPago">
+                      <label class="form-check-label fw-bold small" for="pagoSpei">
+                        🏦 Transferencia SPEI
+                      </label>
+                    </div>
+                    <p class="text-muted mb-0" style="font-size: 0.76rem;">
+                      Transferencia interbancaria directa sin comisiones adicionales.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Bloque 3A: Formulario de Nueva Tarjeta de Débito -->
+              @if (datosCheckout.metodoPago === 'tarjeta') {
+                <div class="p-4 rounded-4 border mb-3" style="background-color: #fffdfd; border-color: #f3d2df !important;">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge cart-badge rounded-pill px-3 py-2">💳 Nueva tarjeta de débito</span>
+                  </div>
+
+                  <!-- Vista previa visual de tarjeta -->
+                  <div class="p-3 rounded-4 mb-4 shadow-sm"
+                       style="max-width: 260px; min-height: 145px; background: linear-gradient(135deg, #f3d6e2 0%, #e7b8cc 60%, #df8eb0 100%); color: #4a2c3a; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="small fw-bold" style="opacity: 0.85;">VIRTUOSA DÉBITO</span>
+                      <span style="font-size: 1.2rem;">💳</span>
+                    </div>
+                    <div class="fw-bold fs-6" style="letter-spacing: 1.5px;">
+                      {{ numeroTarjetaVista }}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-end" style="font-size: 0.75rem;">
+                      <span class="text-truncate" style="max-width: 150px;">{{ titularTarjetaVista }}</span>
+                      <span>{{ vencimientoTarjetaVista }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Número de tarjeta -->
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1" style="color: #4a2c3a;">Número de tarjeta *</label>
+                    <input type="text"
+                           inputmode="numeric"
+                           maxlength="19"
+                           class="form-control"
+                           placeholder="0000 0000 0000 0000"
+                           [(ngModel)]="datosCheckout.tarjeta.numeroTarjeta"
+                           (input)="formatearNumeroTarjeta()">
+                  </div>
+
+                  <!-- Nombre del titular -->
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold mb-1" style="color: #4a2c3a;">Nombre del titular *</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Ej.: María López"
+                           [(ngModel)]="datosCheckout.tarjeta.nombreTitular">
+                    <div class="form-text" style="font-size: 0.75rem;">Como aparece en la tarjeta.</div>
+                  </div>
+
+                  <!-- Vencimiento (Desplegables Mes y Año) y Código de seguridad -->
+                  <div class="row g-3">
+                    <div class="col-6">
+                      <label class="form-label small fw-semibold mb-1" style="color: #4a2c3a;">Vencimiento *</label>
+                      <div class="d-flex gap-2">
+                        <select class="form-select"
+                                aria-label="Mes de vencimiento"
+                                [(ngModel)]="mesVencimientoSeleccionado"
+                                (ngModelChange)="actualizarVencimientoSelect()">
+                          <option value="" disabled selected>MM</option>
+                          @for (mes of mesesVencimiento; track mes) {
+                            <option [value]="mes">{{ mes }}</option>
+                          }
+                        </select>
+                        <select class="form-select"
+                                aria-label="Año de vencimiento"
+                                [(ngModel)]="anioVencimientoSeleccionado"
+                                (ngModelChange)="actualizarVencimientoSelect()">
+                          <option value="" disabled selected>AA</option>
+                          @for (anio of aniosVencimiento; track anio) {
+                            <option [value]="anio">{{ anio }}</option>
+                          }
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label small fw-semibold mb-1" style="color: #4a2c3a;">Código de seguridad *</label>
+                      <div class="input-group">
+                        <input type="text"
+                               inputmode="numeric"
+                               maxlength="4"
+                               class="form-control"
+                               placeholder="000"
+                               [(ngModel)]="datosCheckout.tarjeta.codigoSeguridad"
+                               (input)="formatearCodigoSeguridad()">
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                title="Código CVV de 3 o 4 dígitos al reverso de tu tarjeta"
+                                (click)="mostrarAyudaCvv = !mostrarAyudaCvv">
+                          ?
+                        </button>
+                      </div>
+                      @if (mostrarAyudaCvv) {
+                        <div class="form-text" style="font-size: 0.75rem;">
+                          Son los 3 dígitos al reverso de tu tarjeta (o 4 al frente en American Express).
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <!-- Bloque 3B: Detalles de Pago en OXXO -->
+              @if (datosCheckout.metodoPago === 'oxxo') {
+                <div class="p-3 rounded-3 mb-3 small" style="background-color: #fff8e7; border: 1px solid #ffe69c; color: #664d03;">
+                  <strong>🏪 Pago en efectivo OXXO:</strong> Al confirmar tu pedido se generará tu código de referencia único para pagar en caja (comisión OXXO de $15.00 MXN en tienda).
+                </div>
+              }
+
+              <!-- Bloque 3C: Detalles de Transferencia SPEI -->
+              @if (datosCheckout.metodoPago === 'transferencia') {
+                <div class="p-3 rounded-3 mb-3 small" style="background-color: #fdf0f5; color: #4a2c3a;">
+                  <strong>CLABE Interbancaria Virtuosa's Room:</strong> 0121 8001 5489 2034 11 • Banco BBVA México.
+                </div>
+              }
+
+              <!-- Botones para guardar (Continuar) o cerrar -->
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" (click)="mostrarSeccionCheckout = false">
+                  Cancelar
+                </button>
+                <button type="button" class="btn btn-rosa rounded-pill px-4 fw-semibold" (click)="guardarDatosEnvioPago()">
+                  Continuar
+                </button>
+              </div>
+
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <!-- ----------------------------------------------------------------- -->
+      <!-- COLUMNA DERECHA: RESUMEN DE COMPRA Y FINALIZACIÓN                 -->
+      <!-- ----------------------------------------------------------------- -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+          <h2 class="h5 fw-bold mb-3" style="color: #4a2c3a;">Resumen de Compra</h2>
+
+          @if (faltanteEnvioGratis > 0) {
+            <div class="p-2 rounded-3 mb-3 small text-center" style="background-color: #fdf0f5; color: #4a2c3a;">
+              Agrega <strong>${{ faltanteEnvioGratis }}.00 MXN</strong> más para obtener envío gratis.
+            </div>
+          }
+
+          <!-- Cupón de descuento -->
+          <div class="mb-3">
+            <label class="form-label small text-muted mb-1">¿Tienes un cupón de descuento?</label>
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control text-uppercase" placeholder="Ej. VIRTUOSA10" [(ngModel)]="codigoInput">
+              <button type="button" class="btn btn-outline-rosa fw-semibold" (click)="aplicarCupon()">Aplicar</button>
+            </div>
+            @if (mensajeCupon) {
+              <div class="d-flex justify-content-between align-items-center mt-1">
+                <small class="text-success">{{ mensajeCupon }}</small>
+                @if (cuponAplicado) {
+                  <button type="button" class="btn btn-link btn-sm p-0 ms-2 text-danger" (click)="quitarCupon()">Quitar</button>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Desglose de importes -->
+          <div class="border-top pt-3 small">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Subtotal:</span>
+              <span class="fw-semibold">${{ subtotal }}.00 MXN</span>
+            </div>
+            @if (montoDescuento > 0) {
+              <div class="d-flex justify-content-between mb-2 text-success">
+                <span>Descuento ({{ cuponAplicado ? cuponAplicado.codigo : '' }})</span>
+                <span>−${{ montoDescuento }}.00 MXN</span>
+              </div>
+            }
+            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+              <span class="text-muted">Envío estándar:</span>
+              <span>{{ costoEnvio === 0 ? 'GRATIS' : '$' + costoEnvio + '.00 MXN' }}</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="fw-bold" style="color: #4a2c3a;">Total a pagar:</span>
+              <span class="h4 fw-bold mb-0" style="color: #df5c8e;">${{ totalFinal }}.00 MXN</span>
+            </div>
+          </div>
+
+          <!-- Estado de confirmación de domicilio y método de pago -->
+          <div class="p-3 rounded-3 mb-3 small" style="background-color: #fdf0f5;">
+            @if (datosGuardadosConfirmados) {
+              <div class="fw-semibold mb-1" style="color: #4a2c3a;">✅ Envío y pago listos</div>
+              <div class="text-muted" style="font-size: 0.78rem;">
+                C.P. <strong>{{ datosCheckout.codigoPostal }}</strong> • {{ etiquetaMetodoPago }}
+              </div>
+            } @else {
+              <div class="fw-semibold mb-1" style="color: #df5c8e;">Falta registrar envío y pago</div>
+              <div class="text-muted" style="font-size: 0.78rem;">
+                Abre la sección de domicilio y método de pago para guardar tus datos.
+              </div>
+            }
+          </div>
+
+          <!-- Botón principal de acción -->
+          @if (!datosGuardadosConfirmados) {
+            <button type="button"
+                    class="btn btn-rosa w-100 rounded-pill fw-semibold py-2"
+                    (click)="mostrarSeccionCheckout = true">
+              📍 Ingresar domicilio y pago
+            </button>
+          } @else {
+            <button type="button"
+                    class="btn btn-rosa w-100 rounded-pill fw-semibold py-2"
+                    [disabled]="procesandoPedido"
+                    (click)="finalizarCompra()">
+              {{ procesandoPedido ? 'Confirmando pedido...' : '✨ Confirmar y Finalizar Pedido' }}
+            </button>
+          }
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>

@@ -1,0 +1,30 @@
+.cupon-badge {
+  background-color: #fdf0f5;
+  color: #df5c8e;
+  font-weight: 500;
+}
+
+.cupon-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cupon-card:hover {
+  transform: translateY(-4px);
+}
+
+.codigo-box {
+  background-color: #fdf0f5;
+  border: 1.5px dashed #df5c8e;
+  border-radius: 10px;
+}
+
+.btn-rosa {
+  background-color: #df5c8e;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-rosa:hover {
+  background-color: #c94779;
+  color: #ffffff;
+}

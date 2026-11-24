@@ -1,0 +1,116 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+        
+        <div class="text-center mb-4">
+          <span class="badge signin-badge mb-2 px-3 py-2 rounded-pill">
+            Nueva Cuenta
+          </span>
+          <h1 class="h3 fw-bold mb-1" style="color: #df5c8e;">Crear Cuenta</h1>
+          <p class="small text-muted mb-0">
+            Regístrate en Virtuosa's Room para guardar tus favoritos y realizar tus pedidos.
+          </p>
+        </div>
+
+        @if (mensajeError) {
+          <div class="alert alert-danger border-0 rounded-3 py-2 px-3 small mb-3" role="alert">
+            {{ mensajeError }}
+          </div>
+        }
+
+        <form (ngSubmit)="onRegistro()">
+          
+          <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+              <label for="regNombre" class="form-label small text-muted mb-1">Nombre *</label>
+              <input type="text" 
+                     id="regNombre" 
+                     name="nombre"
+                     class="form-control custom-input" 
+                     placeholder="Tu nombre"
+                     [(ngModel)]="nombre"
+                     required>
+            </div>
+            <div class="col-sm-6">
+              <label for="regApellido" class="form-label small text-muted mb-1">Apellido *</label>
+              <input type="text" 
+                     id="regApellido" 
+                     name="apellido"
+                     class="form-control custom-input" 
+                     placeholder="Tu apellido"
+                     [(ngModel)]="apellido"
+                     required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="regEmail" class="form-label small text-muted mb-1">Correo electrónico *</label>
+            <input type="email" 
+                   id="regEmail" 
+                   name="email"
+                   class="form-control custom-input" 
+                   placeholder="nombre@ejemplo.com"
+                   [(ngModel)]="email"
+                   required>
+          </div>
+
+          <div class="mb-3">
+            <label for="regTelefono" class="form-label small text-muted mb-1">Teléfono (opcional)</label>
+            <input type="tel" 
+                   id="regTelefono" 
+                   name="telefono"
+                   class="form-control custom-input" 
+                   placeholder="867 000 0000"
+                   [(ngModel)]="telefono">
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label for="regPassword" class="form-label small text-muted mb-0">Contraseña (mínimo 6 caracteres) *</label>
+              <button type="button" 
+                      class="btn btn-link btn-sm p-0 text-decoration-none small" 
+                      style="color: #df5c8e;"
+                      (click)="mostrarPassword = !mostrarPassword">
+                {{ mostrarPassword ? 'Ocultar' : 'Mostrar' }}
+              </button>
+            </div>
+            <input [type]="mostrarPassword ? 'text' : 'password'" 
+                   id="regPassword" 
+                   name="password"
+                   class="form-control custom-input" 
+                   placeholder="••••••••"
+                   [(ngModel)]="password"
+                   required>
+          </div>
+
+          <div class="mb-4">
+            <label for="regConfirmar" class="form-label small text-muted mb-1">Confirmar contraseña *</label>
+            <input [type]="mostrarPassword ? 'text' : 'password'" 
+                   id="regConfirmar" 
+                   name="confirmarPassword"
+                   class="form-control custom-input" 
+                   placeholder="••••••••"
+                   [(ngModel)]="confirmarPassword"
+                   required>
+          </div>
+
+          <button type="submit" class="btn btn-signin w-100 py-2 mb-3" [disabled]="cargando">
+            {{ cargando ? 'Creando cuenta...' : 'Registrarme' }}
+          </button>
+
+        </form>
+
+        <p class="text-center small text-muted mb-0">
+          ¿Ya tienes una cuenta? 
+          <a routerLink="/login" class="text-decoration-none" style="color: #df5c8e;">
+            Inicia sesión aquí
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+  </div>
+</div>

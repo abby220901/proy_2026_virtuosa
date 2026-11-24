@@ -1,0 +1,27 @@
+.admin-badge {
+  background-color: #fdf0f5;
+  color: #df5c8e;
+  font-weight: 600;
+}
+
+.btn-rosa {
+  background-color: #df5c8e;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-rosa:hover {
+  background-color: #c94779;
+  color: #ffffff;
+}
+
+.btn-outline-rosa {
+  border: 1.5px solid #df5c8e;
+  color: #df5c8e;
+  background-color: #ffffff;
+}
+
+.btn-outline-rosa:hover {
+  background-color: #fdf0f5;
+  color: #df5c8e;
+}

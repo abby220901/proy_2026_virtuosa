@@ -1,0 +1,24 @@
+.btn-rosa {
+  background-color: #df5c8e;
+  border-color: #df5c8e;
+  color: #ffffff;
+}
+
+.btn-rosa:hover,
+.btn-rosa:focus {
+  background-color: #c9487a;
+  border-color: #c9487a;
+  color: #ffffff;
+}
+
+.btn-outline-rosa {
+  color: #df5c8e;
+  border-color: #df5c8e;
+}
+
+.btn-outline-rosa:hover,
+.btn-outline-rosa:focus {
+  background-color: #df5c8e;
+  border-color: #df5c8e;
+  color: #ffffff;
+}

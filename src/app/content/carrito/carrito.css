@@ -1,0 +1,46 @@
+.cart-badge {
+  background-color: #fdf0f5;
+  color: #df5c8e;
+  font-weight: 600;
+}
+
+.btn-rosa {
+  background-color: #df5c8e;
+  color: #ffffff;
+  border: 1.5px solid #df5c8e;
+}
+
+.btn-rosa:hover {
+  background-color: #c94779;
+  color: #ffffff;
+  border-color: #c94779;
+}
+
+.btn-outline-rosa {
+  background-color: #ffffff;
+  color: #df5c8e;
+  border: 1.5px solid #f4bfd3;
+}
+
+.btn-outline-rosa:hover {
+  background-color: #fdf0f5;
+  color: #df5c8e;
+  border-color: #df5c8e;
+}
+
+.metodo-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+  border-color: #e9ecef !important;
+}
+
+.metodo-card:hover {
+  border-color: #f4bfd3 !important;
+  background-color: #fffafd;
+}
+
+.metodo-activo {
+  border: 1.5px solid #df5c8e !important;
+  background-color: #fdf0f5 !important;
+}

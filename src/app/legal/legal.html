@@ -1,0 +1,287 @@
+<div class="legal-page py-5">
+  <div class="container">
+
+    <!-- ==================================================================== -->
+    <!-- ENCABEZADO DEL CENTRO LEGAL                                          -->
+    <!-- ==================================================================== -->
+    <div class="legal-header mb-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div>
+          <span class="badge legal-badge mb-2 px-3 py-2">
+            Versión 1.0 • Vigente Noviembre 2026
+          </span>
+          <h1 class="h2 fw-bold legal-main-title mb-1">Centro legal de políticas y ayuda</h1>
+          <p class="legal-subtitle mb-0">
+            Marco normativo, protección al consumidor y regulación sanitaria.
+          </p>
+        </div>
+
+        <button type="button" class="btn btn-print d-flex align-items-center gap-2" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>Imprimir / Guardar PDF</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-4 align-items-start">
+
+      <!-- ================================================================== -->
+      <!-- MENÚ LATERAL FIJO (SIDEBAR)                                        -->
+      <!-- ================================================================== -->
+      <div class="col-lg-3">
+        <div class="legal-sidebar shadow-sm">
+          <div class="sidebar-header px-3 py-2 small fw-bold text-uppercase">
+            Documentos disponibles
+          </div>
+          <div class="list-group list-group-flush">
+            
+            <button type="button" class="list-group-item list-group-item-action legal-tab"
+                    [class.active]="seccionActiva === 'terminos'"
+                    (click)="cambiarSeccion('terminos')">
+              <span>Términos y condiciones</span>
+            </button>
+
+            <button type="button" class="list-group-item list-group-item-action legal-tab"
+                    [class.active]="seccionActiva === 'privacidad'"
+                    (click)="cambiarSeccion('privacidad')">
+              <span>Aviso de privacidad</span>
+            </button>
+
+            <button type="button" class="list-group-item list-group-item-action legal-tab"
+                    [class.active]="seccionActiva === 'envios'"
+                    (click)="cambiarSeccion('envios')">
+              <span>Política de envíos</span>
+            </button>
+
+            <button type="button" class="list-group-item list-group-item-action legal-tab"
+                    [class.active]="seccionActiva === 'devoluciones'"
+                    (click)="cambiarSeccion('devoluciones')">
+              <span>Cancelaciones y garantías</span>
+            </button>
+
+            <button type="button" class="list-group-item list-group-item-action legal-tab"
+                    [class.active]="seccionActiva === 'faq'"
+                    (click)="cambiarSeccion('faq')">
+              <span>Preguntas frecuentes (FAQ)</span>
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================== -->
+      <!-- TARJETA PRINCIPAL DE LECTURA DE DOCUMENTOS                         -->
+      <!-- ================================================================== -->
+      <div class="col-lg-9">
+        <article class="legal-card shadow-sm p-4 p-md-5">
+
+          <!-- ================================================================ -->
+          <!-- 1. TÉRMINOS Y CONDICIONES                                        -->
+          <!-- ================================================================ -->
+          @if (seccionActiva === 'terminos') {
+            <div class="doc-meta mb-3">
+              <span class="doc-code">Código: TC-VR-2026</span>
+              <span>•</span>
+              <span>LFPC Art. 76 Bis • Código de Comercio • NOM-141-SSA1/SCFI-2012</span>
+            </div>
+            <h2 class="h3 fw-bold doc-title mb-4">Términos y condiciones de uso y contratación electrónica</h2>
+
+            <div class="info-callout mb-4">
+              <h3 class="h6 fw-bold mb-1">Identidad del proveedor (Art. 76 Bis Fracc. III LFPC)</h3>
+              Denominación comercial: Virtuosa's Room (Plataforma Académica Demostrativa sin fines de lucro).<br>
+              Domicilio físico: Nuevo Laredo, Tamaulipas, México • RFC Ficticio: VRO260101AAA.<br>
+              Canales oficiales de atención: soporte@virtuosasroom.edu.mx • Tel. (867) 000-0000 (Lunes a Viernes de 9:00 a 18:00 hrs).
+            </div>
+
+            <h3 class="h5 fw-bold section-heading">Naturaleza de los productos y normativa cosmética</h3>
+            <p class="doc-text">
+              Virtuosa's Room comercializa productos cosméticos, maquillaje y accesorios de belleza. Conforme al Artículo 32 de la LFPC, a la Ley General de Salud (Arts. 269 al 272) y a la NOM-141-SSA1/SCFI-2012 (Etiquetado para productos cosméticos preenvasados), toda ficha de producto exhibe información veraz sobre ingredientes clave, tono/variante, contenido neto, instrucciones de uso, precauciones dermatológicas y disponibilidad real en inventario.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Transparencia Comercial (Arts. 7 y 7 Bis LFPC)</h3>
+            <p class="doc-text">
+              Todos los precios se muestran en Pesos Mexicanos (MXN) e incluyen el Impuesto al Valor Agregado (IVA). Antes de concluir la compra, el sistema desglosa de manera clara y sin cargos ocultos: el subtotal de artículos, descuentos aplicables por cupones vigentes, el costo exacto de envío y el monto total a pagar.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Perfeccionamiento del contrato electrónico</h3>
+            <p class="doc-text">
+              De conformidad con los artículos 89 al 95 del Código de Comercio y el Código de Ética en materia de Comercio Electrónico de PROFECO, el contrato de compraventa se perfecciona únicamente cuando el usuario realiza la acción afirmativa de marcar la casilla de aceptación expresa de estos Términos y Condiciones (nunca premarcada) y confirma su pedido. El sistema conserva la versión del documento aceptada, la fecha/hora exacta y el folio de transacción.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Medios de pago y uso de entorno sandbox</h3>
+            <p class="doc-text mb-0">
+              Por seguridad del usuario y al tratarse de un entorno académico verificable, los pagos se procesan exclusivamente mediante simulación/sandbox. Virtuosa's Room no captura, procesa ni almacena números reales de tarjetas bancarias (PAN), códigos de seguridad (CVV) ni contraseñas financieras.
+            </p>
+          }
+
+          <!-- ================================================================ -->
+          <!-- 2. AVISO DE PRIVACIDAD INTEGRAL                                  -->
+          <!-- ================================================================ -->
+          @if (seccionActiva === 'privacidad') {
+            <div class="doc-meta mb-3">
+              <span class="doc-code">Código: AP-VR-2026</span>
+              <span>•</span>
+              <span>LFPDPPP Vigente (DOF 20-03-2025)</span>
+            </div>
+            <h2 class="h3 fw-bold doc-title mb-4">Aviso de privacidad</h2>
+
+            <p class="doc-text">
+              En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP vigente, publicada el 20 de marzo de 2025) y los principios de licitud, consentimiento, información, calidad, finalidad, lealtad, proporcionalidad y responsabilidad, Virtuosa's Room, con domicilio en Nuevo Laredo, Tamaulipas, hace de su conocimiento el tratamiento de sus datos personales.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Datos personales recabados</h3>
+            <p class="doc-text">
+              Bajo el principio de minimización de datos, únicamente solicitamos información estrictamente necesaria para la relación comercial: nombre completo, correo electrónico, número telefónico de contacto y domicilio completo de entrega (calle, número, colonia, municipio, estado, código postal y referencias). No recabamos datos personales sensibles (como historial clínico dermatológico o datos bancarios reales).
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Finalidades del tratamiento</h3>
+            <ul class="legal-list my-3">
+              <li>Finalidades Primarias (indispensables para el servicio): Crear y administrar su cuenta de cliente; validar inventario; procesar, preparar y entregar sus pedidos; enviar notificaciones transaccionales de estado; y gestionar aclaraciones, cancelaciones, devoluciones o garantías.</li>
+              <li>Finalidades Secundarias (opcionales): Envío de boletines promocionales, cupones personalizados y lanzamientos de temporada. Usted puede negar o revocar su consentimiento para estas finalidades en cualquier momento sin afectar su acceso a la tienda.</li>
+            </ul>
+
+            <h3 class="h5 fw-bold section-heading">Medidas de seguridad y conservación</h3>
+            <p class="doc-text">
+              Sus credenciales de acceso se almacenan protegidas mediante algoritmos criptográficos de hash robusto (Argon2id/bcrypt) y las comunicaciones operan bajo protocolo cifrado HTTPS/TLS. Los datos de transacciones se conservan únicamente durante el plazo necesario para cumplir con garantías y obligaciones legales aplicables.
+            </p>
+
+            <div class="info-callout mt-4">
+              <h3 class="h6 fw-bold mb-1">Ejercicio de derechos ARCO y revocación del consentimiento</h3>
+              Usted tiene derecho a Acceder a sus datos personales, Rectificarlos si son inexactos, Cancelarlos cuando considere que no se requieren, u Oponerse a su tratamiento (Derechos ARCO). Para ejercerlos, envíe una solicitud con su identificador de cuenta al correo soporte@virtuosasroom.edu.mx indicando su nombre completo, correo registrado, descripción clara del derecho a ejercer y evidencia de identidad. Recibirá resolución en un plazo máximo de 20 días hábiles.
+            </div>
+          }
+
+          <!-- ================================================================ -->
+          <!-- 3. POLÍTICA DE ENVÍOS Y ENTREGAS                                 -->
+          <!-- ================================================================ -->
+          @if (seccionActiva === 'envios') {
+            <div class="doc-meta mb-3">
+              <span class="doc-code">Código: PE-VR-2026</span>
+              <span>•</span>
+              <span>Art. 76 Bis Fracc. IV LFPC • Logística Cosmética</span>
+            </div>
+            <h2 class="h3 fw-bold doc-title mb-4">Política de envíos</h2>
+
+            <h3 class="h5 fw-bold section-heading">Cobertura geográfica y tiempos estimados</h3>
+            <ul class="legal-list my-3">
+              <li>Entrega Local (Nuevo Laredo, Tamaulipas): Plazo estimado de 1 a 2 días hábiles posteriores a la confirmación del pago.</li>
+              <li>Envío Nacional (República Mexicana): Cobertura en todo el territorio nacional mediante paquetería terrestre certificada, con plazo estimado de 3 a 5 días hábiles (zonas extendidas pueden requerir hasta 7 días hábiles).</li>
+              <li>Restricciones de transporte: Productos en aerosol o con contenido inflamable (como fijadores presurizados o esmaltes) se envían exclusivamente por vía terrestre conforme a la regulación de transporte de mercancías.</li>
+            </ul>
+
+            <h3 class="h5 fw-bold section-heading">Costos de envío</h3>
+            <p class="doc-text">
+              El costo de envío estándar nacional o local es de $99.00 MXN (IVA incluido). En compras iguales o superiores a $799.00 MXN (después de aplicar cupones de descuento), el envío es gratuito. El importe final siempre se muestra antes de autorizar el pago.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Preparación, embalaje protector y seguimiento</h3>
+            <p class="doc-text">
+              Debido a la fragilidad de polvos compactos, paletas de sombras y envases de vidrio, cada pedido se despacha con material de amortiguación sellado y etiqueta de manejo frágil. Una vez recolectado por la paquetería, el cliente recibe su número de guía en el apartado Seguimiento de Pedido.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Incidencias, intentos fallidos y paquetes dañados</h3>
+            <ul class="legal-list mb-0">
+              <li>Intentos de entrega: La paquetería realizará hasta 2 intentos de entrega en el domicilio indicado. En caso de ausencia, el paquete permanecerá 5 días hábiles en sucursal para recolección antes de retornar a nuestro almacén.</li>
+              <li>Daño en tránsito o extravío: Si el empaque exterior llega violado, húmedo o aplastado, el cliente deberá tomar fotografías antes y después de abrirlo y reportarlo dentro de las 48 horas siguientes a la recepción para gestionar la reposición sin costo.</li>
+            </ul>
+          }
+
+          <!-- ================================================================ -->
+          <!-- 4. CANCELACIONES, DEVOLUCIONES Y GARANTÍAS                       -->
+          <!-- ================================================================ -->
+          @if (seccionActiva === 'devoluciones') {
+            <div class="doc-meta mb-3">
+              <span class="doc-code">Código: DG-VR-2026</span>
+              <span>•</span>
+              <span>LFPC Arts. 77, 78, 92 y 92 Ter • Ley General de Salud</span>
+            </div>
+            <h2 class="h3 fw-bold doc-title mb-4">Política de cancelaciones,devoluciones,cambios y garantías</h2>
+
+            <p class="doc-text">
+              En Virtuosa's Room respetamos íntegramente los derechos irrenunciables del consumidor establecidos en la Ley Federal de Protección al Consumidor (LFPC). Ninguna cláusula comercial limita las facultades legales que asisten al comprador.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Cancelación de pedidos</h3>
+            <p class="doc-text">
+              El cliente puede solicitar la cancelación total de su pedido sin penalización desde su cuenta mientras el pedido se encuentre en estado Pendiente o Pagado (antes de pasar a Preparando o Enviado). El reembolso simulado se procesa de inmediato al mismo método de pago de origen y el inventario se reintegra automáticamente. Si el paquete ya fue despachado, deberá tramitarse como devolución al recibirlo.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Supuestos de devolución y cambio (Art. 92 LFPC)</h3>
+            <ul class="legal-list my-3">
+              <li>Producto defectuoso, dañado o incorrecto: Cuando el artículo llegue roto, derramado, con caducidad vencida, con falla en su aplicador o no corresponda al tono/SKU solicitado, el cliente cuenta con hasta 30 días naturales para solicitar sin costo el cambio físico, reposición o reembolso íntegro (incluyendo gastos de envío). En estos casos, Virtuosa's Room cubre el 100% de la guía de retorno.</li>
+              <li>Devolución voluntaria por cortesía (arrepentimiento): El cliente podrá solicitar devolución dentro de los primeros 5 días hábiles posteriores a la entrega, siempre que el producto conserve su empaque original, celofán y sellos de inviolabilidad intactos. En este supuesto voluntario, el costo de envío de retorno corre a cargo del cliente.</li>
+            </ul>
+
+            <div class="info-callout my-4">
+              <h3 class="h6 fw-bold mb-1">Excepción sanitaria justificada</h3>
+              Con fundamento en las disposiciones sanitarias aplicables a productos cosméticos y de higiene personal (Ley General de Salud y NOM-141-SSA1/SCFI-2012), no proceden devoluciones voluntarias por cambio de opinión o tono en labiales, máscaras de pestañas, bases líquidas, delineadores, brochas o esponjas que hayan sido abiertos, probados o cuyos sellos de seguridad estén rotos, salvo que presenten un defecto de fabricación comprobable.
+            </div>
+
+            <h3 class="h5 fw-bold section-heading">Garantía comercial (Arts. 77 y 78 LFPC)</h3>
+            <p class="doc-text">
+              Todos los accesorios, herramientas cosméticas, estuches y brochas cuentan con una garantía mínima de 90 días naturales contados a partir de la fecha de entrega contra defectos de materiales o manufactura (desprendimiento de cerdas, fallas en cierres o mecanismos). La garantía no cubre desgaste natural por uso ordinario ni daños derivados de caídas o limpieza inadecuada.
+            </p>
+
+            <h3 class="h5 fw-bold section-heading">Procedimiento de reclamación y tiempos de resolución</h3>
+            <p class="doc-text mb-0">
+              Para iniciar cualquier solicitud: (1) Ingrese a su cuenta o escriba a soporte@virtuosasroom.edu.mx indicando su folio de pedido, SKU del producto, motivo y evidencia fotográfica; (2) El sistema emitirá un folio de atención y acuse en un plazo máximo de 48 horas hábiles; (3) Una vez validada e inspeccionada la evidencia o el retorno, la reposición o reembolso se ejecutará en un máximo de 5 días hábiles.
+            </p>
+          }
+
+          <!-- ================================================================ -->
+          <!-- 5. PREGUNTAS FRECUENTES (FAQ)                                    -->
+          <!-- ================================================================ -->
+          @if (seccionActiva === 'faq') {
+            <div class="doc-meta mb-3">
+              <span class="doc-code">Código: FAQ-VR-2026</span>
+              <span>•</span>
+              <span>Guía rápida para compradores</span>
+            </div>
+            <h2 class="h3 fw-bold doc-title mb-4">Preguntas frecuentes (FAQ)</h2>
+
+            <div class="faq-item mb-3">
+              <h3 class="h6 fw-bold mb-2">¿Los productos son seguros y cumplen con normativas en México?</h3>
+              <p class="doc-text small mb-0">
+                Sí. Todos los productos catalogados en Virtuosa's Room siguen los lineamientos de información comercial y etiquetado de la NOM-141-SSA1/SCFI-2012, especificando ingredientes, contenido neto, instrucciones de uso y lote/caducidad en su empaque.
+              </p>
+            </div>
+
+            <div class="faq-item mb-3">
+              <h3 class="h6 fw-bold mb-2">¿Puedo cambiar un labial o base si no me quedó el tono después de abrirlo?</h3>
+              <p class="doc-text small mb-0">
+                Por razones estrictas de higiene y salud, los productos cosméticos abiertos o con sello de seguridad violado no tienen cambio por elección de tono. Te recomendamos revisar la descripción de subtonos en la ficha de detalle antes de confirmar tu compra. Si el producto llegó dañado o equivocado, el cambio es 100% gratuito.
+              </p>
+            </div>
+
+            <div class="faq-item mb-3">
+              <h3 class="h6 fw-bold mb-2">¿Cómo funciona el pago en la tienda y qué pasa con mis datos bancarios?</h3>
+              <p class="doc-text small mb-0">
+                Al ser un proyecto académico, el checkout utiliza una pasarela de pago en entorno sandbox/simulado. Nunca debes ingresar números reales de tarjeta ni códigos CVV reales, y el sistema jamás almacena información bancaria confidencial.
+              </p>
+            </div>
+
+            <div class="faq-item mb-3">
+              <h3 class="h6 fw-bold mb-2">¿Emiten factura electrónica (CFDI) ante el SAT?</h3>
+              <p class="doc-text small mb-0">
+                No. Conforme a la normativa fiscal vigente del SAT, esta plataforma académica no simula la emisión de CFDI válidos. Al finalizar tu pedido recibirás un comprobante digital interno con folio único y desglose de compra.
+              </p>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="h6 fw-bold mb-2">¿Cómo doy seguimiento a mi pedido o solicito una devolución?</h3>
+              <p class="doc-text small mb-0">
+                Inicia sesión en Cuenta > Historial de Pedidos. Ahí podrás consultar el estado actualizado de tu envío (Pendiente, Pagado, Preparando, Enviado o Entregado), visualizar tu número de guía y generar un folio de solicitud de devolución o garantía.
+              </p>
+            </div>
+          }
+
+        </article>
+      </div>
+
+    </div>
+  </div>
+</div>

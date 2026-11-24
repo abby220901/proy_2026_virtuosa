@@ -1,0 +1,90 @@
+/* =========================================================================
+   BARRA DE NAVEGACIÓN PRINCIPAL (VIRTUOSA'S ROOM)
+   ========================================================================= */
+
+.navbar-virtuosa {
+  background-color: #df5c8e;
+}
+
+.navbar-virtuosa .navbar-brand,
+.navbar-virtuosa .nav-link {
+  color: #ffffff;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.navbar-virtuosa .nav-link:hover,
+.navbar-virtuosa .nav-link:focus,
+.navbar-virtuosa .nav-link.active {
+  color: #ffffff;
+  opacity: 0.92;
+}
+
+/* =========================================================================
+   ENLACE DE PERFIL ("Hola, [Nombre]")
+   ========================================================================= */
+
+.perfil-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50rem;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.perfil-link:hover,
+.perfil-link:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* =========================================================================
+   CONTADORES DE CARRITO Y BOTONES DE SESIÓN
+   ========================================================================= */
+
+.badge-virtuosa {
+  background-color: #ffffff;
+  color: #df5c8e;
+  font-weight: 700;
+}
+
+.btn-sesion-outline {
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  background-color: transparent;
+  border-radius: 50rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-sesion-outline:hover,
+.btn-sesion-outline:focus {
+  background-color: #ffffff;
+  color: #df5c8e;
+}
+
+/* =========================================================================
+   OVERLAY DE DESPEDIDA AL CERRAR SESIÓN
+   ========================================================================= */
+
+.logout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background-color: rgba(74, 44, 58, 0.35);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.logout-card {
+  max-width: 380px;
+  width: 100%;
+  border: 1.5px solid #f3d2df;
+}

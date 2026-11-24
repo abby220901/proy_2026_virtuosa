@@ -1,0 +1,102 @@
+<!-- ====================================================================== -->
+<!-- PIE DE PÁGINA (FOOTER) - VIRTUOSA'S ROOM                               -->
+<!-- ====================================================================== -->
+<footer class="virtuosa-footer pt-5 pb-4 mt-auto">
+  <div class="container">
+    <div class="row g-4 pb-4 border-bottom footer-divider">
+
+      <!-- COLUMNA 1: IDENTIDAD DE MARCA Y REDES SOCIALES -->
+      <div class="col-lg-5 col-md-6">
+        <h2 class="h5 fw-bold text-white mb-3">Virtuosa's Room</h2>
+        <p class="small footer-text mb-3">
+          Cosméticos y accesorios de belleza seleccionados para resaltar tu estilo único. Compra segura y atención personalizada.
+        </p>
+
+        <!-- Redes Sociales -->
+        <div class="d-flex gap-2 mt-3" aria-label="Redes sociales de Virtuosa's Room">
+          
+          <!-- Instagram -->
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+             class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+
+          <!-- Facebook -->
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
+             class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+
+          <!-- TikTok -->
+          <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" 
+             class="social-btn" aria-label="TikTok">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+            </svg>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- COLUMNA 2: MARCO LEGAL Y POLÍTICAS (CONECTADO A /legal) -->
+      <div class="col-lg-4 col-md-6">
+        <h3 class="h6 fw-bold text-white text-uppercase mb-3">Legal y Políticas</h3>
+        <ul class="list-unstyled d-flex flex-column gap-2 small">
+          <li>
+            <a routerLink="/legal" [queryParams]="{ seccion: 'terminos' }" class="footer-link fw-semibold">
+              Términos y Condiciones
+            </a>
+          </li>
+          <li>
+            <a routerLink="/legal" [queryParams]="{ seccion: 'privacidad' }" class="footer-link">
+              Aviso de Privacidad Integral
+            </a>
+          </li>
+          <li>
+            <a routerLink="/legal" [queryParams]="{ seccion: 'envios' }" class="footer-link">
+              Política de Envíos y Entregas
+            </a>
+          </li>
+          <li>
+            <a routerLink="/legal" [queryParams]="{ seccion: 'devoluciones' }" class="footer-link">
+              Cancelaciones, Devoluciones y Garantías
+            </a>
+          </li>
+          <li>
+            <a routerLink="/legal" [queryParams]="{ seccion: 'faq' }" class="footer-link">
+              Preguntas Frecuentes (FAQ)
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- COLUMNA 3: CONTACTO Y SOPORTE -->
+      <div class="col-lg-3 col-md-12">
+        <h3 class="h6 fw-bold text-white text-uppercase mb-3">Contacto y Soporte</h3>
+        <ul class="list-unstyled d-flex flex-column gap-2 small footer-text">
+          <li><strong>Horario:</strong> Lun - Vie, 9:00 a 18:00 hrs</li>
+          <li><strong>Correo:</strong> soporte@virtuosasroom.edu.mx</li>
+          <li><strong>Tel:</strong> (867) 000-0000</li>
+          <li><strong>Ubicación:</strong> Nuevo Laredo, Tamaulipas, México</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- BARRA INFERIOR -->
+    <div class="pt-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small footer-text">
+      <p class="mb-0">
+        © 2026 <strong>Virtuosa's Room</strong>. Todos los derechos reservados.
+      </p>
+      <p class="mb-0 text-center text-md-end">
+        Proyecto académico sin fines de lucro • RFC Ficticio: VRO260101AAA
+      </p>
+    </div>
+  </div>
+</footer>

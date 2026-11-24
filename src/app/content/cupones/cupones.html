@@ -1,0 +1,80 @@
+<div class="container py-5">
+
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+      <span class="badge cupon-badge px-3 py-2 rounded-pill mb-2">Beneficios Exclusivos</span>
+      <h1 class="h3 fw-bold mb-0" style="color: #df5c8e;">
+        Cupones para {{ authService.obtenerNombreVisible() }}
+      </h1>
+    </div>
+    <span class="text-muted small">
+      {{ todosLosCupones.length }} cupones disponibles
+    </span>
+  </div>
+
+  <!-- Aviso flotante al copiar / activar cupón -->
+  @if (codigoCopiado) {
+    <div class="alert alert-light border shadow-sm rounded-pill px-4 py-2 position-fixed bottom-0 end-0 m-4 d-flex align-items-center gap-3"
+         style="z-index: 1060; border-color: #df5c8e !important; color: #4a2c3a;">
+      <span class="small fw-semibold">
+        🎟️ Cupón <strong>{{ codigoCopiado }}</strong> copiado y listo para usar en tu carrito.
+      </span>
+      <a routerLink="/carrito" class="btn btn-sm text-white rounded-pill px-3" style="background-color: #df5c8e;">
+        Ir al carrito
+      </a>
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border" style="color: #df5c8e;" role="status"></div>
+      <p class="small text-muted mt-2">Cargando tus cupones...</p>
+    </div>
+  } @else {
+    <div class="row g-4">
+      @for (cupon of todosLosCupones; track cupon.codigo) {
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white cupon-card">
+            
+            <!-- Franja superior rosa -->
+            <div class="p-3 text-white d-flex justify-content-between align-items-center"
+                 style="background: linear-gradient(135deg, #df5c8e 0%, #c94779 100%);">
+              <span class="badge bg-white text-dark rounded-pill px-3 py-1 small fw-semibold">
+                {{ cupon.etiqueta }}
+              </span>
+              <span class="fw-bold fs-5">{{ cupon.porcentaje }}% OFF</span>
+            </div>
+
+            <!-- Cuerpo del cupón -->
+            <div class="card-body d-flex flex-column p-4">
+              <h2 class="h5 fw-bold mb-2" style="color: #4a2c3a;">{{ cupon.titulo }}</h2>
+              <p class="small text-muted mb-3">{{ cupon.descripcion }}</p>
+
+              <div class="small text-muted mb-3">
+                <div>• Compra mínima: <strong>${{ cupon.minimoCompra }}.00 MXN</strong></div>
+                <div>• {{ cupon.vigencia }}</div>
+              </div>
+
+              <!-- Caja punteada con el código -->
+              <div class="mt-auto pt-2">
+                <div class="codigo-box d-flex justify-content-between align-items-center px-3 py-2 mb-3">
+                  <span class="fw-bold tracking-wide" style="color: #df5c8e; letter-spacing: 1px;">
+                    {{ cupon.codigo }}
+                  </span>
+                  <button type="button"
+                          class="btn btn-sm btn-rosa rounded-pill px-3"
+                          (click)="copiarCupon(cupon)">
+                    {{ codigoCopiado === cupon.codigo ? '¡Copiado!' : 'Usar cupón' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

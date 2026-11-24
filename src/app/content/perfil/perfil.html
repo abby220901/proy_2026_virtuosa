@@ -1,0 +1,236 @@
+<div class="container py-5">
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 1: ENCABEZADO DEL PERFIL                                      -->
+  <!-- ===================================================================== -->
+  <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge px-3 py-2 rounded-pill mb-2" style="background-color: #fdf0f5; color: #df5c8e;">
+          Mi Cuenta • Virtuosa's Room
+        </span>
+        <h1 class="h3 fw-bold mb-0" style="color: #df5c8e;">Mi Perfil</h1>
+      </div>
+      <a routerLink="/categorias" class="btn btn-sm btn-outline-rosa rounded-pill px-4 fw-semibold">
+        ← Ir al catálogo
+      </a>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 2: ALERTAS Y ESTADO DE SESIÓN                                 -->
+  <!-- ===================================================================== -->
+  @if (mensajeExito) {
+    <div class="alert alert-success border-0 rounded-4 shadow-sm py-2 px-4 small mb-4">
+      ✅ {{ mensajeExito }}
+    </div>
+  }
+
+  @if (mensajeError) {
+    <div class="alert alert-danger border-0 rounded-4 shadow-sm py-2 px-4 small mb-4">
+      ⚠️ {{ mensajeError }}
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="card border-0 shadow-sm rounded-4 bg-white p-5 text-center">
+      <p class="text-muted small mb-0">Cargando tu perfil y pedidos...</p>
+    </div>
+  } @else if (!authService.estaAutenticado()) {
+    <div class="card border-0 shadow-sm rounded-4 bg-white p-5 text-center">
+      <h2 class="h5 fw-bold mb-2" style="color: #4a2c3a;">Inicia sesión para ver tu perfil</h2>
+      <p class="small text-muted mb-4">Accede a tu cuenta para consultar tus datos personales, editar tu dirección y revisar tus pedidos.</p>
+      <div>
+        <a routerLink="/login" class="btn btn-rosa rounded-pill px-4 fw-semibold">
+          Iniciar sesión
+        </a>
+      </div>
+    </div>
+  } @else {
+
+    <!-- =================================================================== -->
+    <!-- SECCIÓN 3: DATOS PERSONALES, DIRECCIÓN EDITABLE Y PEDIDOS           -->
+    <!-- =================================================================== -->
+    <div class="row g-4">
+
+      <!-- Columna izquierda: Datos personales y dirección -->
+      <div class="col-lg-6">
+
+        <!-- Tarjeta de datos personales -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3" style="color: #4a2c3a;">👤 Datos personales</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small text-muted mb-1">Nombre *</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     [(ngModel)]="perfil.nombre">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small text-muted mb-1">Apellido</label>
+              <input type="text"
+                     class="form-control form-control-sm"
+                     [(ngModel)]="perfil.apellido">
+            </div>
+            <div class="col-12">
+              <label class="form-label small text-muted mb-1">Correo electrónico</label>
+              <input type="email"
+                     class="form-control form-control-sm bg-light"
+                     [value]="perfil.email"
+                     readonly>
+            </div>
+            <div class="col-12">
+              <label class="form-label small text-muted mb-1">Teléfono</label>
+              <input type="tel"
+                     class="form-control form-control-sm"
+                     placeholder="867 000 0000"
+                     [(ngModel)]="perfil.telefono">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta de dirección (consulta y edición) -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h2 class="h5 fw-bold mb-0" style="color: #4a2c3a;">📍 Dirección de entrega</h2>
+            <button type="button"
+                    class="btn btn-sm rounded-pill px-3 fw-semibold"
+                    [class.btn-outline-rosa]="!editandoDireccion"
+                    [class.btn-outline-secondary]="editandoDireccion"
+                    (click)="alternarEdicionDireccion()">
+              {{ editandoDireccion ? 'Cancelar edición' : '✏️ Editar dirección' }}
+            </button>
+          </div>
+
+          @if (!editandoDireccion) {
+            <p class="small mb-1" style="color: #4a2c3a;">
+              <strong>Dirección actual:</strong> {{ direccionResumida }}
+            </p>
+            @if (perfil.referencias) {
+              <p class="small text-muted mb-0">
+                <strong>Referencias:</strong> {{ perfil.referencias }}
+              </p>
+            }
+          } @else {
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label class="form-label small text-muted mb-1">Calle y número</label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       placeholder="Ej. Av. Guerrero #1420"
+                       [(ngModel)]="perfil.calleNumero">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-muted mb-1">Código Postal</label>
+                <input type="text"
+                       maxlength="5"
+                       class="form-control form-control-sm"
+                       placeholder="88000"
+                       [(ngModel)]="perfil.codigoPostal">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-muted mb-1">Colonia</label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       placeholder="Col. Centro"
+                       [(ngModel)]="perfil.colonia">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-muted mb-1">Ciudad</label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       [(ngModel)]="perfil.ciudad">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-muted mb-1">Estado</label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       [(ngModel)]="perfil.estado">
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-muted mb-1">Referencias</label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       placeholder="Entre calles, fachada o indicaciones"
+                       [(ngModel)]="perfil.referencias">
+              </div>
+            </div>
+          }
+
+          <div class="mt-4 d-flex justify-content-end">
+            <button type="button"
+                    class="btn btn-rosa rounded-pill px-4 fw-semibold"
+                    [disabled]="guardando"
+                    (click)="guardarCambios()">
+              {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha: Historial de pedidos del usuario -->
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h5 fw-bold mb-0" style="color: #4a2c3a;">🛍️ Mis pedidos</h2>
+            <span class="badge rounded-pill px-3 py-1" style="background-color: #fdf0f5; color: #df5c8e;">
+              {{ authService.pedidosUsuario().length }}
+            </span>
+          </div>
+
+          @if (authService.pedidosUsuario().length === 0) {
+            <div class="text-center py-4">
+              <p class="small text-muted mb-3">Todavía no tienes pedidos registrados en tu cuenta.</p>
+              <a routerLink="/categorias" class="btn btn-sm btn-outline-rosa rounded-pill px-4 fw-semibold">
+                Explorar productos
+              </a>
+            </div>
+          } @else {
+            <div class="d-flex flex-column gap-3">
+              @for (ped of authService.pedidosUsuario(); track ped.folio) {
+                <div class="p-3 rounded-4 border" style="border-color: #f3d2df !important; background-color: #fffdfd;">
+                  <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap gap-2">
+                    <span class="fw-bold small" style="color: #4a2c3a;">Folio {{ ped.folio }}</span>
+                    <span class="badge rounded-pill" style="background-color: #fdf0f5; color: #df5c8e;">
+                      {{ ped.estado || 'Pendiente' }}
+                    </span>
+                  </div>
+
+                  <div class="text-muted mb-2" style="font-size: 0.78rem;">
+                    {{ ped.fecha | date:'dd/MM/yyyy HH:mm' }} • {{ ped.metodoPago || 'Pago registrado' }}
+                  </div>
+
+                  @if (ped.direccionEntrega) {
+                    <div class="small text-muted mb-2" style="font-size: 0.8rem;">
+                      <strong>Entrega:</strong> {{ ped.direccionEntrega }}
+                    </div>
+                  }
+
+                  @if (ped.productos?.length) {
+                    <div class="border-top pt-2 mb-2">
+                      @for (prod of ped.productos; track prod.sku) {
+                        <div class="d-flex justify-content-between small py-1" style="font-size: 0.8rem;">
+                          <span>{{ prod.cantidad }}x {{ prod.nombre }}</span>
+                          <span class="fw-semibold">${{ prod.precio * prod.cantidad }}.00</span>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  <div class="d-flex justify-content-between align-items-center border-top pt-2">
+                    <span class="small text-muted">Total del pedido:</span>
+                    <span class="fw-bold" style="color: #df5c8e;">${{ ped.total }}.00 MXN</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>

@@ -1,0 +1,10 @@
+body {
+    /* En Angular, el contenido de la carpeta public se suele leer desde la raíz (/) */
+    background-image: url('/imagenes/fondo2.png'); 
+    
+    /* Estas propiedades aseguran que el fondo se vea profesional */
+    background-size: cover;       /* Estira la imagen para cubrir toda la pantalla sin deformarse */
+    background-position: center;  /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita como un mosaico */
+    background-attachment: fixed; /* Mantiene la imagen estática en el fondo mientras haces scroll hacia abajo */
+}

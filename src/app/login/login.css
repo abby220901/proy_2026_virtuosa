@@ -1,0 +1,30 @@
+.login-badge {
+  background-color: #fdf0f5;
+  color: #df5c8e;
+  font-weight: 500;
+}
+
+.custom-input {
+  border-color: #f0ccd8;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  color: #4a2c3a;
+}
+
+.custom-input:focus {
+  border-color: #df5c8e;
+  box-shadow: 0 0 0 0.2rem rgba(223, 92, 142, 0.18);
+}
+
+.btn-login {
+  background-color: #df5c8e;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-login:hover:not(:disabled) {
+  background-color: #c94779;
+  color: #ffffff;
+}
